@@ -1,0 +1,105 @@
+
+@import "tailwindcss";
+/* Hide scrollbar for all browsers */
+.scroll-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+.scroll-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+
+
+  .input {
+    @apply w-full p-2 border border-gray-300 rounded;
+  }
+  .btn {
+    @apply mt-2 px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded;
+  }
+
+  
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+
+
+
+@layer utilities {
+  @keyframes typewriter {
+    0% {
+      width: 0;
+    }
+    60% {
+      width: 14ch; /* Full text visible */
+    }
+    80% {
+      width: 14ch; /* Hold full width for a while */
+    }
+    100% {
+      width: 0;
+    }
+  }
+  
+
+  @keyframes blink {
+    0%, 100% {
+      border-color: transparent;
+    }
+    50% {
+      border-color: white;
+    }
+  }
+
+  .animate-typewriter {
+    width: 0ch;
+    animation: typewriter 4s steps(12) infinite, blink 0.7s step-end infinite;
+  }
+}
+
+
+/* 🔥 custom animations for neon border */
+@keyframes border-top {
+  0% { left: -100%; }
+  50%, 100% { left: 100%; }
+}
+@keyframes border-right {
+  0% { top: -100%; }
+  50%, 100% { top: 100%; }
+}
+@keyframes border-bottom {
+  0% { right: -100%; }
+  50%, 100% { right: 100%; }
+}
+@keyframes border-left {
+  0% { bottom: -100%; }
+  50%, 100% { bottom: 100%; }
+}
+
+/* ✅ utility classes */
+.animate-border-top {
+  animation: border-top 1s linear infinite;
+}
+.animate-border-right {
+  animation: border-right 1s linear infinite 0.25s;
+}
+.animate-border-bottom {
+  animation: border-bottom 1s linear infinite 0.5s;
+}
+.animate-border-left {
+  animation: border-left 1s linear infinite 0.75s;
+}

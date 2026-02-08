@@ -1,0 +1,184 @@
+"use client";
+
+import React, { useState } from "react";
+
+import { FileDown, X } from 'lucide-react';
+import axios from "axios";
+import { toast } from "react-toastify";
+import ImageGallery from "../ImageGallery";
+
+import Loader from '@/components/loader'
+
+
+
+
+const floorplans = [
+    '/assets/emami-floor-plans/a19.webp',
+    '/assets/emami-floor-plans/a20.webp',
+    '/assets/emami-floor-plans/a21.webp',
+    '/assets/emami-floor-plans/a22.webp',
+    '/assets/emami-floor-plans/a23.webp',
+    '/assets/emami-floor-plans/a24.webp',
+    '/assets/emami-floor-plans/a25.webp',
+    '/assets/emami-floor-plans/a26.webp',
+    '/assets/emami-floor-plans/a27.webp',
+    '/assets/emami-floor-plans/a28.webp',
+    '/assets/emami-floor-plans/a29.webp',
+    '/assets/emami-floor-plans/a31.webp',
+]
+
+
+const Gallery = () => {
+
+    const [isOpen, setIsOpen] = useState(false);
+    const [loading , setLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        source:'emami'
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async(e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true)
+
+        try {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const response = await axios.post<{ message: string; lead: unknown }>(
+                'https://split-wise-clone-085p.onrender.com/api/mmr/leads',
+                formData
+            );
+
+            toast.success('Brochure request submitted successfully!');
+            setFormData({ name: '', email: '', phone: '', source: 'emami' });
+            setIsOpen(false);
+            setLoading(false);
+
+            // Trigger the download
+            const link = document.createElement('a');
+            link.href = 'pdfs/Emami Aamod Floor Plans.pdf'; // Path in the public folder
+            link.download = 'Emami Aamod Floor Plans.pdf'; // Suggested filename
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error: unknown) {
+            setLoading(false);
+            if (axios.isAxiosError(error)) {
+                const message =
+                    error.response?.data?.message ||
+                    'Failed to submit. Please try again.';
+                toast.error(message);
+            } else {
+                toast.error('An unknown error occurred.');
+            }
+            console.error('Submission error:', error);
+        }
+    };
+    return (
+        <>
+    
+
+            <section className="px-4 py-12 sm:px-8 md:px-16 lg:px-24 bg-white">
+                <h1 className="text-blue-400 text-2xl sm:text-4xl md:text-5xl font-bold mb-10 mt-5">Floor Plans</h1>
+
+                <ImageGallery images={floorplans} />
+        </section>
+        
+        <div>
+                {/* Main Section */}
+                <div className="flex flex-col md:flex-row gap-6 md:gap-10 p-6 md:p-20 mb-10">
+                    <button
+                        onClick={() => setIsOpen(true)}
+                        className="inline-flex items-center gap-3 px-10 py-2
+                    cursor-pointer bg-red-600 text-white rounded-lg shadow-md hover:bg-red-700 transition-all w-fit"
+                    >
+                        <FileDown className="w-7 h-7 md:w-9 md:h-9" />
+                        <div className="flex flex-col leading-tight text-left">
+                            <span className="text-[10px] md:text-xs font-medium text-white/80">Download</span>
+                            <span className="text-sm md:text-base font-semibold">Floor Plans</span>
+                        </div>
+                    </button>
+
+                    <div className="flex-1">
+                        <p className="font-semibold text-gray-600 text-sm md:text-base leading-relaxed">
+                            Discover spacious layouts designed with purpose and perfection. 
+                            The floor plans represents intelligent design with indulgent comfort, offering 
+                            expansive living spaces tailored to elevate every moment. 
+                            Choose a layout that matches your lifestyle — where every square foot speaks luxury.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Modal */}
+                {isOpen && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                        <div className="bg-white rounded-2xl w-[90%] max-w-md p-6 md:p-8 shadow-lg relative">
+                            {/* Close Button */}
+                            <button
+                                onClick={() => setIsOpen(false)}
+                                className="absolute top-3 right-3 text-gray-500 hover:text-red-600"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+
+                            {/* Modal Content */}
+                            <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">Download Floor Plans</h2>
+                            <p className="text-sm text-gray-600 mb-6">Fill in your details to proceed.</p>
+
+                            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    placeholder="Your Name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    required
+                                    className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                                />
+                                <input
+                                    type="email"
+                                    name="email"
+                                    placeholder="Email Address"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                    className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                                />
+                                <input
+                                    type="tel"
+                                    name="phone"
+                                    placeholder="Phone Number"
+                                    value={formData.phone}
+                                    onChange={handleChange}
+                                    required
+                                    className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                                />
+
+                                <button
+                                    type="submit"
+                                    className="mt-4 bg-red-600 hover:bg-red-700 text-white py-2 rounded-md transition-all cursor-pointer"
+                                >
+                                    {loading ? (
+                                        <div className="flex justify-center items-center">
+                                            <Loader />
+                                        </div>
+                                    ) : (
+                                        <>Submit & Download</>
+                                    )}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                )}
+        </div>
+        
+        </>
+    );
+};
+
+export default Gallery;
