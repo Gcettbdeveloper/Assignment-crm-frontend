@@ -27,7 +27,7 @@ export default function RootLayout({
         <RoleGuardProvider>
 
           {children}
-          <Footer/>
+          <Footer phoneNumber='+91 9038250350'/>
         </RoleGuardProvider>
 
       </body>

@@ -2,9 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { Linkedin, Phone } from "lucide-react";
 
-import MyPhoto from "../../public/assets/me.jpg"; // 👈 change image
+import MyPhoto from "../../public/assets/me.jpg";
 
-const Footer = () => {
+interface FooterProps {
+    phoneNumber: string;
+}
+
+const Footer = ({ phoneNumber }: FooterProps) => {
     return (
         <footer className="bg-gradient-to-br from-black via-gray-900 to-black text-white px-6 py-12">
             <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
@@ -28,7 +32,7 @@ const Footer = () => {
                 {/* Center Section */}
                 <div className="flex items-center gap-2 text-gray-300">
                     <Phone size={16} />
-                    <span className="text-sm">+91 9038250350</span>
+                    <span className="text-sm">{phoneNumber}</span>
                 </div>
 
                 {/* Right Section */}
